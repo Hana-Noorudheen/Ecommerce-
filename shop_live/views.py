@@ -51,7 +51,6 @@ def signup(request):
         if User.objects.filter(email=Email).exists():
             print("Email exists")
 
-            # messages.info(request,'email taken')
             return JsonResponse(
 
             {'success':False},
@@ -75,34 +74,16 @@ def display(request):
   return render(request,'display.html')
 
 
-def admin(request):
-  if request.method== 'POST':
 
-        email = request.POST['email']
-        password = request.POST['password']
-
-        check_user = auth.authenticate(username=email, password=password)
-        
-        if check_user:
-          u = User.objects.get(username=email)
-          Name=u.first_name
-          request.session['username'] = Name
-          return JsonResponse(
-
-              {'success':True},
-               safe=False
-             )
-
-        else:    
-            
-          return JsonResponse(
-               {'success':False},
-               safe=False
-             )      
-
-  else:
-
-    return render(request, 'admin.html') 
   
+
+def logout(request):
+  try:
+      request.session.flush()
+  except:
+      return redirect('login')
+  
+
+  return redirect('/login')           
 
 
