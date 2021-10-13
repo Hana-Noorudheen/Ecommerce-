@@ -1,0 +1,35 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}  
+   
+
+
+  {% for i in result %}
+  <div class="row">
+    <div class="col-md-3 offset-md-2">
+        <img class="card" height="150px" src="{{i.img.url}}" />
+    </div>
+    <div class="col-md-4">
+        <h3>{{i.name}}</h3>
+        <h5>{{i.desc}}</h5>
+        <h6>${{i.price }}</h6> 
+    </div>
+    
+    <div class="col-md-2">
+        
+        <td><a href="productdelete/{{i.id}}" class="btn btn-danger">Delete</a></td>
+        <td><a href="productupdate/{{i.id}}" class="btn btn-success">Edit</a></td>
+        
+
+    </div>
+    
+</div> <br>
+
+
+
+{% endfor %}
+
+
+{% endblock %} 

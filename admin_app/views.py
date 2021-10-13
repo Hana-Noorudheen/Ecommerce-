@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import request,HttpResponse
 from django.contrib.auth.models import User,auth
 from django.http import JsonResponse
+from . models import Products
 
 # Create your views here.
 
@@ -10,6 +11,14 @@ from django.http import JsonResponse
 
 
 def adminlogin(request):
+  if request.session.has_key('username'):
+
+    u= User.objects.all()
+    return render(request,'display.html',{'result':u}) 
+
+
+
+  else:
 
     if request.method== 'POST':
 
@@ -49,10 +58,132 @@ def adminlogin(request):
         return render(request, 'admin.html') 
 
 
-def display(request):
+def display(request): 
+  if request.session.has_key('username'):
 
-  return render(request,'display.html')    
+    u= User.objects.all()
+    return render(request,'display.html',{'result':u})
+
+  else:
+    return redirect('adminlogin')   
+
+
+
+
+def delete(request,username):
+
+  if request.session.has_key('username'):
+
+
+    u=User.objects.get(username=username)
+    u.delete()
+    return redirect('display')
+
+  else:
+    return redirect('adminlogin') 
+
+
+def products(request):
+  if request.session.has_key('username'):
+
+    u= Products.objects.all()
+    return render(request,'product.html',{'result':u}) 
+  else:
+    return redirect('adminlogin') 
+
+
+def productdelete(request,id):
+  if request.session.has_key('username'):
+
+
+    p=Products.objects.get(id=id)
+    p.delete() 
+
+    return redirect('products') 
+
+  else:
+    return redirect('adminlogin')
+
+
+def productupdate(request,id):
+  if request.session.has_key('username'):
+    p=Products.objects.get(id=id)
   
+    if request.method == 'POST':
+      name=request.POST['name']
+      desc=request.POST['desc']
+      price=request.POST['price']
+      img=request.FILES['img']
+      
+      p.name=name
+      p.desc=desc
+      p.price=price
+      p.img=img
+    
+      p.save()
+      return redirect('products')
+
+    else:
+      name=p.name
+      desc=p.desc
+      price=p.price
+  
+      return render(request,'productupdate.html',{'name':name,'desc':desc,'price':price})
+
+  else:
+    return redirect('adminlogin')
+
+
+def addproduct(request):
+  if request.session.has_key('username'):
+
+
+
+    if request.method == 'POST':
+      name=request.POST['name']
+      desc=request.POST['desc']
+      price=request.POST['price']
+      img=request.FILES['img']
+      u = Products.objects.create(name=name,desc=desc,price=price,img=img)
+      u.save()
+     
+  
+      
+      return redirect('products')
+  
+    else:
+  
+      return render(request,'productadd.html')
+
+  else:
+    return redirect('adminlogin')
+
+
+def update(request,username):
+
+  if request.session.has_key('username'):
+
+
+    u=User.objects.get(username=username)
+    if request.method == 'POST':
+      name=request.POST['name']
+      email=request.POST['email']
+      u.first_name=name
+      u.email=email
+  
+      u.save()
+      return redirect('display')
+  
+    else:
+      name=u.first_name
+      email=u.email
+  
+      return render(request,'update.html',{'name':name,'email':email})
+
+  else:
+    return redirect('adminlogin')
+
+
 
 def logout(request):
   try:

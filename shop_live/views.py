@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import request,HttpResponse
 from django.contrib.auth.models import User,auth
 from django.http import JsonResponse
+from admin_app. models import Products
 
 # Create your views here.
 
@@ -18,8 +19,8 @@ def login(request):
         
         if check_user:
           u = User.objects.get(username=email)
-          Name=u.first_name
-          request.session['username'] = Name
+          username = u.username
+          request.session['username'] = username
           return JsonResponse(
 
               {'success':True},
@@ -69,9 +70,18 @@ def signup(request):
     else:    
         return render(request,'signup.html')
 
-def display(request):
+def userdisplay(request):
+  if request.session.has_key('username'):
+    username = request.session['username']
+    p=Products.objects.all()
+    
+    u= User.objects.get(username=username)
+    name=u.first_name
 
-  return render(request,'display.html')
+
+
+
+  return render(request,'users/index.html',{'products':p,'Name':name})
 
 
 
