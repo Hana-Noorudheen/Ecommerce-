@@ -119,6 +119,49 @@ li{
 	display: none;
 }
 
+.shop-cat-box{
+	margin-bottom: 30px;
+	position: relative;
+	padding: 3px;
+	overflow: hidden;
+	border: 1px solid #010101;
+	-webkit-transition: background 0.4s 0.5s;
+	transition: background 0.4s 0.5s;
+}
+
+.shop-cat-box img{
+	margin: -10px 0 0 -10px;
+	max-width: none;
+	width: -webkit-calc(100% + 10px);
+	width: calc(100% + 10px);
+	opacity: 0.9;
+	-webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+	transition: opacity 0.35s, transform 0.35s;
+	-webkit-transform: translate3d(10px,10px,0);
+	transform: translate3d(10px,10px,0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+.shop-cat-box:hover img{
+	opacity: 0.6;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+.shop-cat-box a{
+	position: absolute;
+	z-index: 2;
+	bottom: 0px;
+	left: 0px;
+	right: 0;
+	margin: 0 auto;
+	text-align: center;
+	border: none;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 700;
+	padding: 8px 0px;
+}
+
 .categories{
 	position: relative;
 	overflow: hidden;

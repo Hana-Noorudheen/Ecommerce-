@@ -3,7 +3,8 @@ from django.shortcuts import render,redirect
 from django.http import request,HttpResponse
 from django.contrib.auth.models import User,auth
 from django.http import JsonResponse
-from . models import Products
+from . models import Products,Category
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -61,7 +62,19 @@ def adminlogin(request):
 def display(request): 
   if request.session.has_key('username'):
 
-    u= User.objects.all()
+    if request.method=='POST':
+
+      
+      name=request.POST['q']
+      u=User.objects.filter(first_name__icontains=name)
+      
+    else: 
+      u= User.objects.all()
+
+    # Pagination
+    paginator=Paginator(u,4)
+    page_number=request.GET.get('page')
+    u=paginator.get_page(page_number)
     return render(request,'display.html',{'result':u})
 
   else:
@@ -86,7 +99,19 @@ def delete(request,username):
 def products(request):
   if request.session.has_key('username'):
 
-    u= Products.objects.all()
+    if request.method=='POST':
+
+
+      name=request.POST['q']
+      u=Products.objects.filter(name__icontains=name)
+    else: 
+      u=Products.objects.all()
+
+    
+    # Pagination
+    paginator=Paginator(u,4)
+    page_number=request.GET.get('page')
+    u=paginator.get_page(page_number)
     return render(request,'product.html',{'result':u}) 
   else:
     return redirect('adminlogin') 
@@ -144,19 +169,26 @@ def addproduct(request):
       desc=request.POST['desc']
       price=request.POST['price']
       img=request.FILES['img']
-      u = Products.objects.create(name=name,desc=desc,price=price,img=img)
+      offer=request.POST['offer']
+      category=request.POST['category']
+      c=Category.objects.get(name=category)
+      u = Products.objects.create(name=name,desc=desc,price=price,img=img,offer=offer,category=c)
       u.save()
-     
-  
       
+  
+    
       return redirect('products')
   
     else:
+
+      c=Category.objects.all()
   
-      return render(request,'productadd.html')
+      return render(request,'productadd.html',{'Category':c})
 
   else:
     return redirect('adminlogin')
+
+    
 
 
 def update(request,username):

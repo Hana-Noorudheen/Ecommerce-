@@ -1,105 +1,48 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wpshop Ecommerce Website Template Using HTML, CSS & Bootstrap </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'User/style.css' %}">
-</head>
 
-<body>
-	<header class="header">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-3">
-					<div class="header_logo">
-						<a href="index.html"><span>Way</span>Shop</a>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<nav class="header_menu">
-						<ul>
-							<li class="active"><a href="index.html">Home</a></li>
-							<li><a href="#">Women's</a></li>
-							<li><a href="#">Men's</a></li>
-							<li><a href="#">Shop</a></li>
-							<li><a href="#">Contact</a></li>
-						</ul>
-					</nav>
-				</div>
-				<div class="col-lg-3">
-					<div class="header_right">
-						<div class="header_right_auth">
-							<a href="#">Hi {{Name}}</a>
-							<a href="logout">Logout</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-
+{% extends 'users/base.html'%}
+{% block content%}
 	<section class="categories">
 		<div class="container-fluid">
 			<div class="row">
+				{% for i in category%}
+				{% if i.special == True %}
 				<div class="col-lg-6 p-0">
 					<div class="categories_item categories_large_item">
-						<img src="{% static 'User/img/categories/category-1.jpg' %}" alt="" class="img-fluid">
+						<img src="{{i.img.url}}" alt="" class="img-fluid">
 						<div class="categories_text">
-							<h1>Women's fashion</h1>
-							<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+							<h1>{{i.name}}</h1>
+							<p>{{i.desc}}</p>
 							<a href="#">Buy now</a>
 						</div>
 					</div>
 				</div>
+                {% endif %}
+				{% endfor %}
+
 				<div class="col-lg-6">
 					<div class="row">
+
+						{% for i in category%}
+						
+						{% if i.special == False %}
+
 						<div class="col-lg-6 col-md-6 col-12 p-0">
 							<div class="categories_item">
-								<img src="{% static 'User/img/categories/category-2.jpg' %}" alt="" class="img-fluid">
+								<img src="{{i.img.url}}" alt="" class="img-fluid">
 								<div class="categories_text">
-									<h4>Men's fashion</h4>
+									<h4>{{ i.name}}</h4>
 									<p>358 items</p>
 									<a href="#">Buy now</a>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-6 col-12 p-0">
-							<div class="categories_item">
-								<img src="{% static 'User/img/categories/category-3.jpg' %}" alt="" class="img-fluid">
-								<div class="categories_text">
-									<h4>Kid's fashion</h4>
-									<p>273 items</p>
-									<a href="#">Buy now</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-6 col-12 p-0">
-							<div class="categories_item">
-								<img src="{% static 'User/img/categories/category-4.jpg' %}" alt="" class="img-fluid">
-								<div class="categories_text">
-									<h4>Cosmetics</h4>
-									<p>159 items</p>
-									<a href="#">Buy now</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-6 col-12 p-0">
-							<div class="categories_item">
-								<img src="{% static 'User/img/categories/category-5.jpg' %}" alt="" class="img-fluid">
-								<div class="categories_text">
-									<h4>Accessory</h4>
-									<p>792 items</p>
-									<a href="#">Buy now</a>
-								</div>
-							</div>
-						</div>
+						{% endif%}
+						{% endfor %}
+						
+						
+				
+					
+
 					</div>
 				</div>
 			</div>
@@ -118,7 +61,7 @@
 				{% for product in products %}
 				<div class="col-lg-3 col-md-4 col-sm-6">
 					<div class="product_item">
-						<div class="product_item_pic">
+						<div class="product_item_pic cart-thumb">
 							<img src="{{product.img.url}}" alt="">
 							{% if product.offer == True%}
 							<div class="label new">Offer</div>
@@ -126,8 +69,9 @@
 							<ul class="product_hover">
 								<li><a href="#"><i class="fa fa-arrows-alt"></i></a></li>
 								<li><a href="#"><i class="fa fa-heart"></i></a></li>
-								<li><a href="#"><i class="fa fa-shopping-bag"></i></a></li>
-							</ul>
+								<li><a href="product/{{product.id}}"><i class="fa fa-shopping-bag"></i></a></li>
+
+                            </ul>	
 						</div>
 						<div class="product_item_text">
 							<h6><a href="#">{{product.name}}</a></h6>
@@ -322,87 +266,5 @@
 			</form>
 		</div>
 	</section>
+	{% endblock %}
 
-	<section class="footer spad">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 col-md-6 col-sm-12">
-					<div class="footer_about">
-						<div class="footer_logo">
-							<a href="index.html">Wpshop<span>.</span></a>
-						</div>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
-						<div class="footer_social">
-							<a href="#">
-								<i class="fa fa-facebook"></i>
-							</a>
-							<a href="#">
-								<i class="fa fa-twitter"></i>
-							</a>
-							<a href="#">
-								<i class="fa fa-instagram"></i>
-							</a>
-							<a href="#">
-								<i class="fa fa-linkedin"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-2 col-md-3">
-					<div class="footer_widget">
-						<h6>Quick Links</h6>
-						<ul>
-							<li><a href="#">About</a></li>
-							<li><a href="#">Blogs</a></li>
-							<li><a href="#">Services</a></li>
-							<li><a href="#">FAQ</a></li>
-							<li><a href="#">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-2 col-md-3">
-					<div class="footer_widget">
-						<h6>Accounts</h6>
-						<ul>
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Login</a></li>
-							<li><a href="#">Order Tracking</a></li>
-							<li><a href="#">Checkout</a></li>
-							<li><a href="#">Wishlist</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-3">
-					<div class="footer_widget">
-						<h6>Support</h6>
-						<ul>
-							<li><a href="#">Frequently Asked Questions</a></li>
-							<li><a href="#">Terms & Conditions</a></li>
-							<li><a href="#">Privacy Policy</a></li>
-							<li><a href="#">Report a Payment Issue</a></li>
-							<li><a href="#">24/7 Support</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<div class="footer_bottom text-center py-4">
-		<p class="mb-0">
-			Copyright &copy; 2021 Wpshop. All right reserved. Design by
-			<a href="index.html">Wpshop.</a>
-		</p>
-	</div>
-
-
- <!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Popper JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script type="text/javascript" src="js/jquery.countdown.min.js"></script>
-<script type="text/javascript" src="main.js"></script>  
-</body>
-</html>

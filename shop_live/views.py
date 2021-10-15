@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import request,HttpResponse
 from django.contrib.auth.models import User,auth
 from django.http import JsonResponse
-from admin_app. models import Products
+from admin_app. models import Products,Category,Cart
 
 # Create your views here.
 
@@ -74,18 +74,47 @@ def userdisplay(request):
   if request.session.has_key('username'):
     username = request.session['username']
     p=Products.objects.all()
+    c=Category.objects.all()
     
     u= User.objects.get(username=username)
     name=u.first_name
 
+    return render(request,'users/index.html',{'products':p,'Name':name,'category':c})
+  else:
+    return redirect('login')
+
+def product(request,id):
+  if request.session.has_key('username'):
+    p=Products.objects.all()
+    
+    id=int(id)
 
 
+    return render(request,'users/productdetails.html',{'product':p,'pid':id})
 
-  return render(request,'users/index.html',{'products':p,'Name':name})
+def cart(request):
+  if request.session.has_key('username'):
 
+    username = request.session['username']
+    u= User.objects.get(username=username)
 
-
+    if request.method == 'POST':
+      id=request.POST['id']
+      p=Products.objects.get(id=id)
   
+      ct=Cart.objects.create(userid=u,pid=p)
+      ct.save()
+
+      return redirect('cart')
+    else:
+
+      c=Cart.objects.filter(userid=u.id)
+      return render(request,'users/cart.html',{'cart':c})
+
+  else:
+    pass  
+
+
 
 def logout(request):
   try:
@@ -94,6 +123,7 @@ def logout(request):
       return redirect('login')
   
 
-  return redirect('/login')           
+  return redirect('/login')     
+
 
 

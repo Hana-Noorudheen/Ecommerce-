@@ -25,8 +25,35 @@
 
   <div class="form-group">
     <label for="exampleInputPassword1">Image</label>
-    <input type="file"  name="img" class="form-control" placeholder="Image">
+    <input type="file"  name="img" class="form-control" placeholder="Image"><br>
   </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Offer</label>
+    </div>
+    <select name="offer" class="custom-select" id="inputGroupSelect01">
+      <option selected>Choose...</option>
+      <option value="True">True</option>
+      <option value="False">False</option>
+    </select>
+  </div> <br>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Category</label>
+    </div>
+    <select name="category" class="custom-select" id="inputGroupSelect01">
+      
+      <option selected>Choose...</option>
+      {% for i in Category %}
+      <option value="{{i.name}}">{{i.name}}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+
+  
 
 
   <br>

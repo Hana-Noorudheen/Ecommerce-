@@ -2,8 +2,18 @@
 
 {% extends 'base.html' %}
 
-{% block content %}  
-   
+{% block content %} 
+<div class="container">
+    <form class="input-group" action="products" method="post">
+        {% csrf_token %}
+        <div class="form-outline">
+            <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+        </button>
+    </form>
+</div>      
+    <br>
 
 
   {% for i in result %}
@@ -30,6 +40,26 @@
 
 
 {% endfor %}
+<ul class="pagination">
+    {% if result.has_previous %}
+    <li class="page-item">
+        <a href="?page=1" class="page-link"><< First</a>
+    </li>
+    <li class="page-item">
+        <a href="{{result.previous_page_link}}" class="page-link">< Previous</a>
+    </li>
+    {% endif %}
+    {% if result.has_next %}
+    <li class="page-item">
+        <a href="?page={{result.next_page_number}}" class="page-link">Next ></a>
+    </li>
+    <li class="page-item">
+        <a href="?page={{result.paginator.num_pages}}" class="page-link">Last >></a>
+    </li>
+    {% endif %}
+  </ul> 
+
+
 
 
 {% endblock %} 
