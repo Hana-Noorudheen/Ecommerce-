@@ -2,6 +2,10 @@
 
 {% block content%}
 <!--Section: Block Content-->
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 {% for p in product %}
 
 {% if pid ==  p.id %}
@@ -71,12 +75,20 @@
               </tr>
               <tr>
                 <td class="pl-0">
+
                   <div class="def-number-input number-input safari_only mb-0">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                      class="minus"></button>
-                    <input class="quantity" min="0" name="quantity" value="1" type="number">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                      class="plus"></button>
+                    <form action="/cart" method="POST">
+
+                      {% csrf_token %}
+                      <div class="def-number-input number-input safari_only ml-5 w-50">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                        class="minus"><span class="glyphicon glyphicon-minus"></span></button>
+                      <input class="quantity w-75" min="0" name="quantity" value="1" type="number">
+                      <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                        class="plus"><span class="glyphicon glyphicon-plus"></span></button>
+                      </div>
+
+                     
                   </div>
                 </td>
                 <td>
@@ -103,13 +115,17 @@
             </tbody>
           </table>
         </div>
-        <form action="/cart" method="POST">
+        
 
-          {% csrf_token %}
-        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
-         <input type="hidden" name="id" value="{{p.id}}">
+        <button type="submit" class="btn btn-primary btn-md mr-1 mb-2"><i
+          class="fas fa-shopping-cart pr-2"></i>Buy Now</button>
+        
+        <input type="hidden" name="id" value="{{p.id}}">
+       
         <button type="submit" class="btn btn-light btn-md mr-1 mb-2"><i
             class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+
+          
         </form>  
       </div>
     </div>

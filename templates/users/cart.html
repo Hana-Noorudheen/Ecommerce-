@@ -1,6 +1,8 @@
 {% extends 'users/base.html' %}
 {% block content %}
 
+
+
 <!--Section: Block Content-->
 <section class="m-5 w-75">
 
@@ -8,16 +10,16 @@
     <div class="row m-5">
   
       <!--Grid column-->
-      <div class="col-lg-12 m-5">
+      <div class="col-lg-8 m-5">
   
         <!-- Card -->
         <div class="mb-5">
           <div class="pt-4 wish-list">
   
-            <h5 class="mb-4">Cart (<span>3</span> items)</h5>
+            <h5 class="mb-4">Cart (<span>{{items}}</span> items)</h5>
            
             {% for i in cart %}
-  
+              
             <div class="row mb-4">
               <div class="col-md-5 col-lg-3 col-xl-3">
                 <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
@@ -38,12 +40,25 @@
                       <p class="mb-3 text-muted text-uppercase small">Size: M</p>
                     </div>
                     <div>
-                      <div class="def-number-input number-input safari_only ml-5 w-50">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                          class="minus decrease"></button>
-                        <input class="quantity" min="0" name="quantity" value="1" type="number">
-                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                          class="plus increase"></button>
+                      <div class="def-number-input number-input safari_only ml-4 w-50">
+
+                        <form action="cartcalc"  class="col-2" method="post">
+                          {% csrf_token %}
+                          <input hidden type="text" id=cartid-{{i.id}} value='{{i.id}}'>
+                          <input hidden type="text" id=qty-{{i.id}} value='{{i.quantity}}' >
+                          <input hidden type="text" id="minus" value='minus'>
+                          <button type="button"  id="btn1-{{i.id}}" value=" - " class="btn btn-block btn-light border-right">-</button>
+                        </form>
+                        
+                      <input class="quantity w-75" min="0" name="quantity" value="{{i.quantity}}" type="number">
+                     
+                        <form action="cartcalc" class="col-2 " method="post">
+                          {% csrf_token %}
+                          <input hidden type="text"  id="cartid-{{i.id}}" value='{{i.id}}'>
+                          <input hidden type="text"  id="qty-{{i.id}}"  value='{{i.quantity}}'>
+                          <input hidden type="text" id="add" value='add'>
+                          <button type="button" id="btn2-{{i.id}}" value=" + " class=" btn btn-block btn-light border-left">+</button>
+                        </form>
                       </div>
                     
                     </div>
@@ -52,10 +67,10 @@
                     <div>
                       <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
                           class="fas fa-trash-alt mr-1"></i> Remove item </a>
-                      <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
-                          class="fas fa-heart mr-1"></i> Move to wish list </a>
+                      <a href="order/{{i.id}}" type="button" class="card-link-secondary small text-uppercase"><i
+                          class="fas fa-heart mr-1"></i> Buy Now</a>
                     </div>
-                    <p class="mb-0"><span><strong id="summary">${{i.pid.price}}</strong></span></p class="mb-0">
+                    <p class="mb-0"><span><strong id="summary">${% widthratio i.pid.price 1 i.quantity %}</strong></span></p class="mb-0">
                   </div>
                 </div>
               </div>
@@ -64,6 +79,7 @@
             {% endfor %}
             
             <hr class="mb-4">
+
             
             <p class="text-primary mb-0"><i class="fas fa-info-circle mr-1"></i> Do not delay the purchase, adding
               items to your cart does not mean booking them.</p>
@@ -103,11 +119,91 @@
               alt="PayPal acceptance mark">
           </div>
         </div>
+        </div>
         <!-- Card -->
   
-     
+
+
+
+</section>
+  <!--Grid column-->
+{% for i in cart %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
   
-  </section>
+    $(document).ready(function(){  
+      $('#btn1-{{i.id}}').click(() => {
+         
+        var cartid =$('#cartid-{{i.id}}').val()
+        var qty = $('#qty-{{i.id}}').val()
+        var check=$('#minus').val() 
+       
+        var data ={
+            'csrfmiddlewaretoken':'{{csrf_token}}',
+            'cartid':cartid,
+            'qty':qty,
+            'check':check,
+        }
+      
+        $.ajax({
+         url:'cartcalc',
+         method: 'POST',
+         data:data,
+         dataType: 'json',
+         success:function(data){
+             if(data.success){
+                
+                 window.location.replace('cart')
+             }else{
+                $("#error").text("Invalid Credentials!!");
+             }
+         }
+     })
+      
+      })
+   
+     })
+
+
+
+    
+  $(document).ready(function(){  
+   $('#btn2-{{i.id}}').click(() => {
+      
+     var cartid =$('#cartid-{{i.id}}').val()
+     var qty = $('#qty-{{i.id}}').val()
+     var check=$('#add').val() 
+     var data ={
+         'csrfmiddlewaretoken':'{{csrf_token}}',
+         'cartid':cartid,
+         'qty':qty,
+         'check':check,
+     }
+   
+     $.ajax({
+      url:'cartcalc',
+      method: 'POST',
+      data:data,
+      dataType: 'json',
+      success:function(data){
+          if(data.success){
+             
+              window.location.replace('cart')
+          }else{
+             $("#error").text("Invalid Credentials!!");
+          }
+      }
+  })
+   
+   })
+
+  })
+
+</script> 
+
+  {% endfor %}
+
   <!--Section: Block Content-->
   <hr class="mb-4">
   {% endblock %}

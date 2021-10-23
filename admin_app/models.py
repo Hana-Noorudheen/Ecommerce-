@@ -22,6 +22,28 @@ class Products(models.Model):
 class Cart(models.Model):
     userid = models.ForeignKey(User, on_delete=models.CASCADE)
     pid=models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity=models.IntegerField(default=1)
+
+class Order(models.Model):
+    cartid = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100) 
+    address = models.CharField(max_length=500)
+    city = models.CharField(max_length=200)
+    state=models.CharField(max_length=100)
+    pincode=models.IntegerField()
+    Phone=models.CharField(max_length=13)
+
+
+
+
+
+    
+
+
+
+
+
+
 
 
 

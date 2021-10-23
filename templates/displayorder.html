@@ -4,9 +4,9 @@
 {% block content %}
  
 
-
+<h1>PRODUCT ORDER DETAILS</h1><br>
 <div class="container">
-  <form class="input-group" action="display" method="post">
+  <form class="input-group" action="displayorder" method="post">
       {% csrf_token %}
       <div class="form-outline">
           <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
@@ -21,26 +21,33 @@
     <thead>
 
     <tr>
+        <th>Username </th>
+        <th>Product Name</th>
         <th>Name</th>
-        <th>Email</th>
-        <th></th>
-        <th></th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Pincode</th>
+        <th>Phone</th>
+
     </tr>
     </thead>
     <tbody>
     
-        {% for i in result %} 
-       {% if i.is_superuser == False%}
+    {% for i in result %} 
+       
       <tr class="active">
-        <td>{{i.first_name}}</td>
-        <td>{{i.email}}</td>
-       
-        <td><a href="delete/{{i.username}}" class="btn btn-danger">Delete</a></td>
-        <td><a href="update/{{i.username}}" class="btn btn-success">Edit</a></td>
-       
+        <td>{{i.cartid.userid.first_name}}</td> 
+        <td>{{i.cartid.pid.name}}</td>  
+        <td>{{i.name}}</td>
+        <td>{{i.address}}</td>
+        <td>{{i.city}}</td>
+        <td>{{i.state}}</td>
+        <td>{{i.pincode}}</td>
+        <td>{{i.Phone}}</td>
       </tr>
-      {% endif%}
-      {% endfor %}
+    
+    {% endfor %}
     </tbody>
    
 </table>

@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import request,HttpResponse
 from django.contrib.auth.models import User,auth
 from django.http import JsonResponse
-from . models import Products,Category
+from . models import Products,Category,Order
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -16,9 +16,6 @@ def adminlogin(request):
 
     u= User.objects.all()
     return render(request,'display.html',{'result':u}) 
-
-
-
   else:
 
     if request.method== 'POST':
@@ -52,8 +49,6 @@ def adminlogin(request):
                    {'success':False},
                    safe=False
                  ) 
-
-    
     else:   
         
         return render(request, 'admin.html') 
@@ -172,7 +167,7 @@ def addproduct(request):
       offer=request.POST['offer']
       category=request.POST['category']
       c=Category.objects.get(name=category)
-      u = Products.objects.create(name=name,desc=desc,price=price,img=img,offer=offer,category=c)
+      u=Products.objects.create(name=name,desc=desc,price=price,img=img,offer=offer,category=c)
       u.save()
       
   
@@ -215,7 +210,16 @@ def update(request,username):
   else:
     return redirect('adminlogin')
 
+def displayorder(request):
 
+  if request.method == 'POST':
+    pass
+
+
+  else:
+    o=Order.objects.all()
+    return render(request,'displayorder.html',{'result':o})
+    
 
 def logout(request):
   try:

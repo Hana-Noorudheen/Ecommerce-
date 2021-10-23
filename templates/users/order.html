@@ -1,0 +1,150 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+
+
+
+{% for i in cart %}
+{% if id == i.id %}
+
+
+<!--Section: Block Content-->
+<section class="m-5">
+  
+  <form action="/order/{{i.id}}" method="post">
+    {% csrf_token %}
+
+    <!--Grid row-->
+    <div class="row">
+  
+      <!--Grid column-->
+      <div class="col-lg-8 mb-4">
+  
+        <!-- Card -->
+        <div class="card wish-list pb-1">
+          <div class="card-body">
+  
+            <h5 class="mb-2">Order details</h5><br>
+  
+            <!-- Grid row -->
+            <div class="row">
+  
+    <!-- Grid column -->
+              <div class="col-lg-6">
+  
+                <!-- First name -->
+                <div class="md-form md-outline mb-0 mb-lg-4">
+                  <label for="Name">Name</label>
+                  <input type="text" name="name" class="form-control mb-0 mb-lg-1" required>
+                  
+                </div>
+  
+              </div>
+             <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+            <!-- Address Part 1 -->
+            <div class="md-form md-outline mt-0">
+
+              <label for="form14">Address</label>
+              <input type="text" name="hno" placeholder="House number and street name" class="form-control" required><br>
+              <input type="text" name="city" placeholder="City"class="form-control" required><br>
+              <input type="text" name="state" placeholder="State"class="form-control" required><br>
+              <input type="number" name="pin" placeholder="Pincode" class="form-control" required><br>
+              
+            </div>
+  
+            <!-- Phone -->
+            <div class="md-form md-outline">
+                <label for="form18">Phone Number</label>
+              <input type="tel" name="pno" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        <!-- Card -->
+  
+      </div>
+      <!--Grid column-->
+  
+      <!--Grid column-->
+      <div class="col-lg-4">
+  
+        <!-- Card -->
+
+        
+        <div class="card mb-4">
+          <div class="card-body">
+  
+            <h5 class="mb-3">{{i.pid.name}}</h5>
+
+            <div class="col-4 mb-2">
+              <figure class="view overlay rounded z-depth-1 main-img">
+              <img src="{{i.pid.img.url}}" class="img-fluid z-depth-1">
+                </a>
+              </figure>
+             
+            </div>
+
+
+  
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                Price
+                <span>{{i.pid.price}}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                Total No of Items
+                <span>{{i.quantity}}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                <div>
+                  <strong>TOTAL AMOUNT</strong>
+                  <strong>
+                  </strong>
+                </div>
+                <span><strong>${% widthratio i.pid.price 1 i.quantity %}</strong></span>
+              </li>
+            </ul>
+  
+            <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Make purchase</button>
+  
+          </div>
+          
+
+        </div>
+      
+        <!-- Card -->
+<!-- Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+
+  
+        
+              <div class="m-3">
+                <div class="form-check pl-0 mb-4 mb-lg-0">
+                  <input type="checkbox" class="form-check-input filled-in" id="new3">
+                  <label class="form-check-label small text-uppercase card-link-secondary" for="new3">Cash on delivery (COD)</label>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+        <!-- Card -->
+  
+      </div>
+      <!--Grid column-->
+  
+    </div>
+    <!--Grid row-->
+  </form>
+
+  
+  </section><br>
+  {% endif %}
+  {% endfor %}
+  
+
+
+  <!--Section: Block Content-->
+  <hr class="mb-4">
+  {% endblock %}
